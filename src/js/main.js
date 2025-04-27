@@ -1,35 +1,22 @@
-// File: src/js/main.js
-
-import '../yellow.css';
-import { getParkData } from './parkService.mjs';
+import { getParkData } from "./parkService.mjs";
 
 const parkData = getParkData();
 
-// Update Disclaimer link
+function parkInfoTemplate(info) {
+  return `<a href="/" class="hero-banner__title">${info.name}</a>
+  <p class="hero-banner__subtitle">
+    <span>${info.designation}</span>
+    <span>${info.states}</span>
+  </p>`;
+}
+
 const disclaimer = document.querySelector(".disclaimer > a");
-if (disclaimer) {
-  disclaimer.href = parkData.url;
-  disclaimer.innerHTML = parkData.fullName;
-}
+disclaimer.href = parkData.url;
+disclaimer.innerHTML = parkData.fullName;
 
-// Update Page Title
-document.title = parkData.fullName;
+document.querySelector("head > title").textContent = parkData.fullName;
 
-// Update Hero Image
-const heroImg = document.getElementById("hero-img");
-if (heroImg) {
-  heroImg.src = parkData.images[0]?.url || "";
-  heroImg.alt = parkData.images[0]?.altText || parkData.fullName;
-}
+document.getElementById("hero-img").src = parkData.images[0].url;
+document.getElementById("hero-img").alt = parkData.images[0].altText || parkData.fullName;
 
-// Update Hero Content
-const heroContent = document.getElementById("hero-content");
-if (heroContent) {
-  heroContent.innerHTML = `
-    <a href="/" class="hero-banner__title">${parkData.name}</a>
-    <p class="hero-banner__subtitle">
-      <span>${parkData.designation}</span>
-      <span>${parkData.states}</span>
-    </p>
-  `;
-}
+document.getElementById("hero-content").innerHTML = parkInfoTemplate(parkData);
